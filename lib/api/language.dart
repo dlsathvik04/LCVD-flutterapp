@@ -5,24 +5,29 @@ import 'package:http/http.dart' as http;
 Future<String?> getChatResponse(String prompt, String disease) async {
   var chatURL = await EndPointsProvider.getChatURL();
 
-  var request = http.MultipartRequest('POST', Uri.parse(chatURL));
-  request.fields.addAll(<String, String>{
-    "question": prompt,
-    "disease_name": disease,
+  var headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer no-key',
+  };
+
+  var body = jsonEncode({
+    "class_name": disease,
+    "history": [],
+    "prompt": prompt,
   });
 
-  var response = await request.send();
+  var response = await http.post(
+    Uri.parse(chatURL),
+    headers: headers,
+    body: body,
+  );
 
   if (response.statusCode == 200) {
-    print('File uploaded successfully');
-    var responseData = await response.stream.toBytes();
-    var responseString = String.fromCharCodes(responseData);
-    var jsonResponse = jsonDecode(responseString);
-
-    // Extract the prediction field
-    return jsonResponse['answer'];
+    print('Received chat response successfully');
+    var jsonResponse = jsonDecode(response.body);
+    return jsonResponse['response'];
   } else {
-    print(response.statusCode);
-    throw Error();
+    print('Error: ${response.statusCode}');
+    throw Exception('Failed to get chat response');
   }
 }

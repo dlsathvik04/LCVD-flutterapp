@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lcvd/api/language.dart';
 import 'package:lcvd/models/prediction.dart';
 import 'package:lcvd/services/prediction_service.dart';
 
@@ -23,13 +24,11 @@ class _ChatPageState extends State<ChatPage> {
     });
 
     try {
-      // Simulate API call with delay (replace this with actual API call)
-      await Future.delayed(const Duration(seconds: 2));
-      // Mocked chatbot response
-      String botResponse = "This is a bot response to: $userMessage";
+      String? botResponse = await getChatResponse(
+          userMessage, widget.prediction.prediction ?? "healthy");
 
       setState(() {
-        widget.prediction.chat!.add(botResponse);
+        widget.prediction.chat!.add(botResponse ?? "ERROR TRY AGAIN");
         PredictionService.updatePrediction(widget.prediction);
       });
     } catch (e) {
@@ -93,7 +92,7 @@ class _ChatPageState extends State<ChatPage> {
           ),
           if (_isSending) const LinearProgressIndicator(),
           Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 30),
             child: Row(
               children: [
                 Expanded(

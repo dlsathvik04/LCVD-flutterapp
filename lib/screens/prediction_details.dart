@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lcvd/models/prediction.dart';
 import 'package:lcvd/models/question.dart';
 // TODO : Uncomment to add chat functionality
-// import 'package:lcvd/screens/chat.dart';
+import 'package:lcvd/screens/chat.dart';
 import 'package:lcvd/services/faq_service.dart';
 import 'package:lcvd/services/prediction_service.dart';
 import 'package:lcvd/widgets/expandable_data.dart';
@@ -155,19 +155,19 @@ class _PredictionDetailsPageState extends State<PredictionDetailsPage> {
         ]),
       ),
       // TODO : Uncomment to add chat functionality
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => ChatPage(
-      //           prediction: widget.prediction,
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   child: const Icon(Icons.chat),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(
+                prediction: widget.prediction,
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.chat),
+      ),
     );
   }
 }
